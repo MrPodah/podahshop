@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Sign Up Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #1a202c; /* Dark background */
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-gray-200">
+    <!-- Navbar -->
+    <nav class="bg-gray-800 shadow fixed w-full z-20 top-0 left-0">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#" class="text-xl font-bold text-white">PODAHSHOP</a>
+
+            <!-- Hamburger Menu (Hidden on larger screens) -->
+            <button id="menu-btn" class="text-gray-400 md:hidden focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+
+            <!-- Menu Links (Hidden on mobile, shown on larger screens) -->
+            <div id="menu-links" class="hidden md:flex space-x-4 items-center">
+                <a href="index.html" class="text-gray-400 hover:text-white flex items-center">
+                    <i class="fas fa-home mr-1"></i> Home
+                </a>
+                <a href="#shop" class="text-gray-400 hover:text-white flex items-center">
+                    <i class="fas fa-store mr-1"></i> Shop
+                </a>
+                <a href="#categories" class="text-gray-400 hover:text-white flex items-center">
+                    <i class="fas fa-list-alt mr-1"></i> Categories
+                </a>
+                <a href="#contact" class="text-gray-400 hover:text-white flex items-center">
+                    <i class="fas fa-envelope mr-1"></i> Contact
+                </a>
+            </div>
+
+            <!-- Search and Cart Icons -->
+            <div class="flex space-x-4 items-center">
+                <!-- Search -->
+                <div class="relative hidden md:block">
+                    <input type="text" placeholder="Search products..." class="bg-gray-700 text-gray-300 border-none rounded-full pl-8 pr-4 py-1 focus:outline-none">
+                    <i class="fas fa-search absolute top-2 left-2 text-gray-400"></i>
+                </div>
+                <!-- User Profile -->
+                <a href="login.html" class="text-gray-400 hover:text-white"><i class="fas fa-user"></i></a>
+                <!-- Cart Icon with badge -->
+                <a href="#" class="text-gray-400 hover:text-white relative">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2">3</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Initially hidden) -->
+        <div id="mobile-menu" class="hidden bg-gray-800 shadow-lg absolute top-16 left-0 w-full z-10 md:hidden">
+            <ul class="space-y-2 px-4 py-6">
+                <li><a href="index.html" class="text-gray-400 hover:text-white block flex items-center" onclick="closeMenu()">
+                    <i class="fas fa-home mr-2"></i> Home</a></li>
+                <li><a href="index.html" class="text-gray-400 hover:text-white block flex items-center" onclick="closeMenu()">
+                    <i class="fas fa-store mr-2"></i> Shop</a></li>
+                <li><a href="index.html" class="text-gray-400 hover:text-white block flex items-center" onclick="closeMenu()">
+                    <i class="fas fa-list-alt mr-2"></i> Categories</a></li>
+                <li><a href="index.html" class="text-gray-400 hover:text-white block flex items-center" onclick="closeMenu()">
+                    <i class="fas fa-envelope mr-2"></i> Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="flex items-center justify-center flex-1 mt-20">
+        <div class="w-full max-w-sm p-8 space-y-8 bg-gray-800 rounded-lg shadow-md">
+            <!-- Login Form -->
+            <div id="loginForm" class="space-y-4">
+                <h2 class="text-2xl font-bold text-white text-center">Login</h2>
+                <form>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-300">Email</label>
+                        <div class="relative">
+                            <input type="email" id="email" required class="mt-1 block w-full p-3 border border-gray-600 bg-gray-700 text-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                
+                            </span>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-300">Password</label>
+                        <div class="relative">
+                            <input type="password" id="password" required class="mt-1 block w-full p-3 border border-gray-600 bg-gray-700 text-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                              
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <a href="#" class="text-sm text-blue-400 hover:underline" onclick="toggleForms()">Sign Up</a>
+                    </div>
+                    <button type="submit" class="w-full p-3 mt-4 text-white bg-blue-600 rounded-md hover:bg-blue-700">Login</button>
+                </form>
+            </div>
+
+            <!-- Sign Up Form -->
+            <div id="signUpForm" class="hidden space-y-4">
+                <h2 class="text-2xl font-bold text-white text-center">Sign Up</h2>
+                <form>
+                    <div>
+                        <label for="firstName" class="block text-sm font-medium text-gray-300">First Name</label>
+                        <input type="text" id="firstName" required class="mt-1 block w-full p-3 border border-gray-600 bg-gray-700 text-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label for="lastName" class="block text-sm font-medium text-gray-300">Last Name</label>
+                        <input type="text" id="lastName" required class="mt-1 block w-full p-3 border border-gray-600 bg-gray-700 text-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label for="signUpEmail" class="block text-sm font-medium text-gray-300">Email</label>
+                        <div class="relative">
+                            <input type="email" id="signUpEmail" required class="mt-1 block w-full p-3 border border-gray-600 bg-gray-700 text-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                
+                            </span>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="signUpPassword" class="block text-sm font-medium text-gray-300">Password</label>
+                        <div class="relative">
+                            <input type="password" id="signUpPassword" required class="mt-1 block w-full p-3 border border-gray-600 bg-gray-700 text-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                               
+                            </span>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="confirmPassword" class="block text-sm font-medium text-gray-300">Confirm Password</label>
+                        <div class="relative">
+                            <input type="password" id="confirmPassword" required class="mt-1 block w-full p-3 border border-gray-600 bg-gray-700 text-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <a href="#" class="text-sm text-blue-400 hover:underline" onclick="toggleForms()">Already have an account? Login</a>
+                    </div>
+                    <button type="submit" class="w-full p-3 mt-4 text-white bg-blue-600 rounded-md hover:bg-blue-700">Sign Up</button>
+                </form>
+                <div class="flex flex-col mt-4">
+                    <span class="text-center text-gray-400">or sign up with</span>
+                    <div class="flex justify-center mt-2 space-x-4">
+                        <button class="p-3 text-white bg-red-600 rounded-full hover:bg-red-700 flex items-center justify-center">
+                            <i class="fab fa-google"></i>
+                        </button>
+                        <button class="p-3 text-white bg-blue-600 rounded-full hover:bg-blue-700 flex items-center justify-center">
+                            <i class="fab fa-facebook-f"></i>
+                        </button>
+                        <button class="p-3 text-white bg-blue-400 rounded-full hover:bg-blue-500 flex items-center justify-center">
+                            <i class="fab fa-twitter"></i>
+                        </button>
+                        <button class="p-3 text-white bg-gray-600 rounded-full hover:bg-gray-700 flex items-center justify-center">
+                            <i class="fab fa-github"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const body = document.body;
+
+        // Toggle mobile menu on click
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            body.classList.toggle('no-scroll');
+        });
+
+        // Close menu and smooth scroll when a link is clicked
+        function closeMenu() {
+            mobileMenu.classList.add('hidden');
+            body.classList.remove('no-scroll');
+        }
+
+        // Smooth scrolling for all anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        function toggleForms() {
+            document.getElementById("loginForm").classList.toggle("hidden");
+            document.getElementById("signUpForm").classList.toggle("hidden");
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PODAHSHOP</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body class="bg-gray-900 text-white">
+
+    <!-- Navbar -->
+    <nav class="bg-gray-800 p-4 fixed w-full top-0 z-10">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-white">PODAHSHOP</a>
+            
+            <!-- Mobile view: Home and Hamburger Menu -->
+            <div class="flex items-center lg:hidden">
+                <a href="index.html" class="text-gray-300 hover:text-white flex items-center mr-4">
+                    <i class="fas fa-home mr-2"></i> Home
+                </a>
+                <div class="cursor-pointer" id="hamburger-menu">
+                    <i class="fas fa-bars text-gray-300 hover:text-white"></i>
+                </div>
+            </div>
+
+            <!-- Desktop view: Links -->
+            <div class="hidden lg:flex items-center space-x-4">
+                <a href="index.html" class="text-gray-300 hover:text-white flex items-center">
+                    <i class="fas fa-home mr-2"></i> Home
+                </a>
+                <div class="relative">
+                    <input type="text" placeholder="Search..." class="bg-gray-700 text-white p-2 rounded focus:outline-none pl-10">
+                    <i class="fas fa-search absolute left-3 top-2 text-gray-400"></i>
+                </div>
+                <a href="#" id="cart-toggle" class="text-gray-300 hover:text-white flex items-center">
+                    <i class="fas fa-shopping-cart mr-1"></i> Cart <span id="cart-count" class="bg-red-500 text-white rounded-full px-2 text-xs ml-1 hidden">0</span>
+                </a>
+                <a href="login.html" class="text-gray-300 hover:text-white flex items-center">
+                    <i class="fas fa-user mr-1"></i> Profile
+                </a>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden flex-col space-y-2 mt-4 lg:hidden">
+            <div class="relative">
+                <input type="text" placeholder="Search..." class="bg-gray-700 text-white p-2 rounded focus:outline-none pl-10">
+                <i class="fas fa-search absolute left-3 top-2 text-gray-400"></i>
+            </div>
+            
+            <a href="#" id="cart-toggle-mobile" class="text-gray-300 hover:text-white flex items-center">
+                <i class="fas fa-shopping-cart mr-1"></i> Cart
+            </a>
+            <a href="login.html" class="text-gray-300 hover:text-white flex items-center">
+                <i class="fas fa-user mr-1"></i> Profile
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-gray-800 py-8 text-center mt-16">
+        <div class="container mx-auto px-4">
+            <h1 class="text-3xl font-bold">Top Electronics</h1>
+            <p class="text-gray-400 mt-2">Explore our wide range of electronics at unbeatable prices!</p>
+        </div>
+    </section>
+
+    <!-- Flash Sales Section -->
+    <section id="flash-sales" class="bg-gray-900 text-gray-100 py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-10">
+                <h3 class="text-2xl font-bold mb-4">Flash Sales</h3>
+                <p class="text-lg">Don't miss out on these limited-time deals!</p>
+            </div>
+            <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4" id="product-grid">
+                <!-- Products will be dynamically inserted here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Sidebar -->
+    <aside id="cart-sidebar" class="fixed right-0 top-0 h-full bg-gray-800 shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-20 w-80 p-4">
+        <h2 class="text-xl font-bold mb-4">Shopping Cart</h2>
+        <div id="cart-items" class="overflow-y-auto flex-1">
+            <!-- Cart items will be dynamically inserted here -->
+        </div>
+        <div class="mt-4">
+            <button id="purchase-button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full">
+                Purchase
+            </button>
+        </div>
+    </aside>
+
+    <!-- Overlay for the cart sidebar -->
+    <div id="overlay" class="fixed inset-0 bg-black opacity-50 hidden z-10"></div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 p-4 text-center">
+        <p class="text-gray-400">&copy; 2024 ElectroShop. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu Toggle, Cart Functionality, and Sidebar -->
+    <script>
+        document.getElementById('hamburger-menu').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        const cartToggle = document.getElementById('cart-toggle');
+        const cartToggleMobile = document.getElementById('cart-toggle-mobile');
+        const cartSidebar = document.getElementById('cart-sidebar');
+        const overlay = document.getElementById('overlay');
+        const cartCount = document.getElementById('cart-count');
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function updateCartCount() {
+            cartCount.textContent = cart.length;
+            cartCount.classList.toggle('hidden', cart.length === 0);
+        }
+
+        function addToCart(product) {
+            cart.push(product);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            renderCartItems();
+            openCart();
+        }
+
+        function renderProducts() {
+            const products = [
+                { id: 1, name: "Product 1", price: 19.99, image: "1.jpg" },
+                { id: 2, name: "Product 2", price: 29.99, image: "2.jpg" },
+                { id: 3, name: "Product 3", price: 39.99, image: "3.jpg" },
+                { id: 4, name: "Product 4", price: 49.99, image: "4.jpg" },
+                { id: 5, name: "Product 5", price: 59.99, image: "1.jpg" },
+                { id: 6, name: "Product 6", price: 69.99, image: "2.jpg" },
+            ];
+
+            const productGrid = document.getElementById('product-grid');
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'bg-gray-800 rounded-lg shadow-lg overflow-hidden';
+                productCard.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-32 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-white">${product.name}</h3>
+                        <p class="text-gray-400">$${product.price.toFixed(2)}</p>
+                        <div class="flex justify-between mt-4">
+                            <button class="text-red-500 hover:text-red-700" onclick="addToCart(${JSON.stringify(product)})">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                            <button class="text-blue-500 hover:text-blue-700" onclick="addToCart(${JSON.stringify(product)})">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                productGrid.appendChild(productCard);
+            });
+        }
+
+        function renderCartItems() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            cartItemsContainer.innerHTML = '';
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p class="text-gray-400">Your cart is empty.</p>';
+                return;
+            }
+
+            cart.forEach((item, index) => {
+                const cartItem = document.createElement('div');
+                cartItem.className = 'flex justify-between items-center mb-2';
+                cartItem.innerHTML = `
+                    <span>${item.name}</span>
+                    <span>$${item.price.toFixed(2)}</span>
+                    <button class="text-red-500" onclick="removeFromCart(${index})">Remove</button>
+                `;
+                cartItemsContainer.appendChild(cartItem);
+            });
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            renderCartItems();
+        }
+
+        function openCart() {
+            cartSidebar.style.transform = 'translateX(0)';
+            overlay.classList.remove('hidden');
+        }
+
+        function closeCart() {
+            cartSidebar.style.transform = 'translateX(100%)';
+            overlay.classList.add('hidden');
+        }
+
+        cartToggle.addEventListener('click', openCart);
+        cartToggleMobile.addEventListener('click', function() {
+            if (cartSidebar.style.transform === 'translateX(0%)') {
+                closeCart();
+            } else {
+                openCart();
+            }
+        });
+
+        overlay.addEventListener('click', closeCart);
+        document.getElementById('purchase-button').addEventListener('click', function() {
+            alert('Thank you for your purchase!');
+            cart = [];
+            localStorage.removeItem('cart');
+            updateCartCount();
+            renderCartItems();
+            closeCart();
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            updateCartCount();
+        });
+    </script>
+</body>
+</html>

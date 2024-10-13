@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart - PODAHSHOP</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body class="bg-gray-900 text-white">
+
+    <!-- Navbar -->
+    <nav class="bg-gray-800 p-4 fixed w-full top-0 z-10">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-white">PODAHSHOP</a>
+            <a href="#" class="text-gray-300 hover:text-white flex items-center">
+                <i class="fas fa-home mr-1"></i> Home
+            </a>
+            <div class="flex items-center">
+                <a href="cart.html" id="cart-link" class="text-gray-300 hover:text-white flex items-center">
+                    <i class="fas fa-shopping-cart mr-1"></i> Cart <span id="cart-count" class="bg-red-500 text-white rounded-full px-2 text-xs ml-1 hidden">0</span>
+                </a>
+                <a href="#" class="text-gray-300 hover:text-white flex items-center ml-4">
+                    <i class="fas fa-user mr-1"></i> Profile
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Cart Section -->
+    <section class="py-16 mt-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-4">Your Cart</h2>
+            <div id="cart-items" class="bg-gray-800 rounded-lg shadow-lg p-4">
+                <!-- Cart items will be dynamically inserted here -->
+            </div>
+            <div class="mt-4">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Checkout
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 p-4 text-center">
+        <p class="text-gray-400">&copy; 2024 ElectroShop. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript for Cart Functionality -->
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function renderCart() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            cartItemsContainer.innerHTML = '';
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p class="text-gray-400">Your cart is empty.</p>';
+                return;
+            }
+
+            cart.forEach((item, index) => {
+                const cartItem = document.createElement('div');
+                cartItem.className = 'flex justify-between items-center bg-gray-700 p-2 mb-2 rounded';
+                cartItem.innerHTML = `
+                    <div>
+                        <h3 class="text-lg font-semibold">${item.name}</h3>
+                        <p class="text-gray-400">$${item.price.toFixed(2)}</p>
+                    </div>
+                    <button class="text-red-500 hover:text-red-700" onclick="removeFromCart(${index})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+                cartItemsContainer.appendChild(cartItem);
+            });
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
+            updateCartCount();
+        }
+
+        function updateCartCount() {
+            const cartCount = document.getElementById('cart-count');
+            cartCount.textContent = cart.length;
+            cartCount.classList.toggle('hidden', cart.length === 0);
+        }
+
+        // Load cart items on page load
+        renderCart();
+        updateCartCount();
+    </script>
+
+</body>
+</html>
